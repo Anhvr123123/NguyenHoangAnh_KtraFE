@@ -1,0 +1,769 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Porsche Centre Vietnam - Luxury Showroom</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style type="text/css">
+        body {
+            background-color: #0a0a0c;
+            color: #e2e8f0;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #fff2be 0%, #d4af37 50%, #997a2d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gold-border-glow {
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+            .gold-border-glow:hover {
+                box-shadow: 0 0 25px rgba(212, 175, 55, 0.3);
+                border: 1px solid rgba(212, 175, 55, 0.6);
+            }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0a0c;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #262933;
+            border-radius: 4px;
+        }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: #d4af37;
+            }
+
+        .tab-btn.active {
+            color: #d4af37;
+            border-bottom: 2px solid #d4af37;
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        /* Timeline Step styling */
+        .step-completed .step-icon {
+            background-color: #d4af37;
+            color: #0a0a0c;
+            border-color: #d4af37;
+        }
+
+        /* Container chứa các bước tiến độ */
+        .stepper-container,
+        .tracking-stepper {
+            position: relative !important;
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: flex-start !important;
+            overflow: hidden !important;
+            padding: 0 30px !important;
+        }
+
+        .stepper-line-progress,
+        .stepper-line,
+        .progress-line {
+            position: absolute !important;
+            top: 20px !important; 
+            left: 60px !important; 
+            right: auto !important;
+            width: 50% !important;
+            max-width: calc(100% - 120px) !important;
+            height: 2px !important;
+            background: linear-gradient(to right, #d4af37 50%, #333333 50%) !important;
+            z-index: 1 !important;
+        }
+
+        /* icon hình tròn  */
+        .stepper-step,
+        .step-item {
+            position: relative !important;
+            z-index: 2 !important;
+        }
+        .step-active .step-icon {
+            border-color: #d4af37;
+            color: #d4af37;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-50 bg-porsche-dark/95 backdrop-blur-md border-b border-porsche-border transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+
+                <!-- Logo -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('showroom')">
+                    <div class="w-10 h-12 bg-gradient-to-b from-gold-400 to-gold-700 flex items-center justify-center rounded-sm shadow-md">
+                        <span class="font-cinzel font-black text-porsche-dark text-xl tracking-tighter">P</span>
+                    </div>
+                    <div>
+                        <span class="font-cinzel font-bold text-lg sm:text-xl tracking-widest block text-white">PORSCHE</span>
+                        <span class="text-[9px] tracking-[0.3em] uppercase text-gold-500 font-semibold block">Centre Vietnam</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden lg:flex items-center space-x-1">
+                    <button onclick="switchTab('showroom')" id="nav-showroom" class="tab-btn active px-4 py-2 text-sm font-medium transition-all rounded-t">
+                        <i class="fa-solid font-car-side mr-1.5"></i> Showroom Xe
+                    </button>
+                    <button onclick="switchTab('account')" id="nav-account" class="tab-btn px-4 py-2 text-sm font-medium text-gray-300 hover:text-gold-400 transition-all rounded-t">
+                        <i class="fa-solid fa-user-shield mr-1.5"></i> Tài Khoản & Bảo Mật
+                    </button>
+                    <button onclick="switchTab('orders')" id="nav-orders" class="tab-btn px-4 py-2 text-sm font-medium text-gray-300 hover:text-gold-400 transition-all rounded-t">
+                        <i class="fa-solid fa-truck-fast mr-1.5"></i> Đơn Hàng & Tracking
+                    </button>
+                    <button onclick="switchTab('support')" id="nav-support" class="tab-btn px-4 py-2 text-sm font-medium text-gray-300 hover:text-gold-400 transition-all rounded-t">
+                        <i class="fa-solid fa-headset mr-1.5"></i> Trung Tâm CSKH
+                    </button>
+                </nav>
+
+                <!-- Right Action Icons & Search -->
+                <div class="flex items-center gap-4">
+                    <!-- Search Input -->
+                    <div class="relative hidden sm:block">
+                        <input type="text" id="searchInput" onkeyup="filterCarsBySearch()" placeholder="Tìm dòng xe Porsche..."
+                               class="bg-porsche-card border border-porsche-border text-xs rounded-full py-2 pl-9 pr-4 text-white focus:outline-none focus:border-gold-500 w-44 lg:w-56 transition-all">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-gray-400 text-xs"></i>
+                    </div>
+
+                    <!-- Cart / Deposit Badge -->
+                    <button onclick="switchTab('orders')" class="relative p-2 text-gray-300 hover:text-gold-500 transition-colors">
+                        <i class="fa-solid fa-car-burst text-lg"></i>
+                        <span id="cartBadgeCount" class="absolute -top-1 -right-1 bg-gold-500 text-porsche-dark text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">1</span>
+                    </button>
+
+                    <!-- Mobile Menu Button -->
+                    <button onclick="toggleMobileMenu()" class="lg:hidden text-gray-300 hover:text-white text-2xl">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Navigation -->
+        <div id="mobileMenu" class="hidden lg:hidden bg-porsche-card border-b border-porsche-border px-4 pt-2 pb-4 space-y-2">
+            <input type="text" onkeyup="filterCarsBySearch()" placeholder="Tìm dòng xe Porsche..."
+                   class="w-full bg-porsche-dark border border-porsche-border text-xs rounded-lg py-2.5 px-4 text-white mb-2">
+            <button onclick="switchTab('showroom'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 text-sm text-gold-400 font-medium border-l-2 border-gold-500">Showroom Xe</button>
+            <button onclick="switchTab('account'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 text-sm text-gray-300">Tài Khoản & Bảo Mật</button>
+            <button onclick="switchTab('orders'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 text-sm text-gray-300">Đơn Hàng & Tracking</button>
+            <button onclick="switchTab('support'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 text-sm text-gray-300">Trung Tâm CSKH</button>
+        </div>
+    </header>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-md"></div>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+
+        <!-- SECTION 1: SHOWROOM XE PORSCHE -->
+        <section id="section-showroom" class="tab-content block">
+            <!-- Hero Banner -->
+            <div class="relative rounded-2xl overflow-hidden mb-10 border border-porsche-border bg-porsche-card">
+                <div class="absolute inset-0 bg-gradient-to-r from-porsche-dark via-porsche-dark/70 to-transparent z-10"></div>
+                <img src="https://tse2.mm.bing.net/th/id/OIP._rHTqFfh4RK0S2qDQzT_HAHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Porsche Banner" class="w-full h-80 sm:h-96 object-cover object-center opacity-60">
+                <div class="absolute inset-0 z-20 flex flex-col justify-center px-6 sm:px-12 max-w-2xl">
+                    <span class="text-gold-500 font-semibold tracking-widest text-xs uppercase mb-2">Biểu tượng thể thao sang trọng</span>
+                    <h1 class="font-cinzel text-3xl sm:text-5xl font-bold text-white leading-tight mb-4">PORSCHE <span class="gold-gradient-text">EXCLUSIVE</span></h1>
+                    <p class="text-gray-300 text-xs sm:text-sm mb-6 leading-relaxed">Khám phá tuyệt tác cơ khí Đức đỉnh cao. Trải nghiệm cảm giác lái thuần chất cùng công nghệ điện hóa tiên phong.</p>
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="scrollToGrid()" class="bg-gradient-to-r from-gold-500 to-gold-600 text-porsche-dark font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-md hover:brightness-110 transition-all shadow-lg">Khám phá Showroom</button>
+                        <button onclick="openTestDriveModal('Porsche 911 Carrera S')" class="bg-porsche-card border border-gold-500/50 text-gold-400 font-semibold text-xs uppercase tracking-wider px-6 py-3 rounded-md hover:bg-gold-500/10 transition-all">Đăng ký lái thử VIP</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Filter Bar -->
+            <div id="showroomGrid" class="flex flex-wrap items-center justify-between gap-4 mb-8 pb-4 border-b border-porsche-border">
+                <div class="flex flex-wrap items-center gap-2" id="filterContainer">
+                    <button onclick="filterCategory('all', this)" class="filter-btn active bg-gold-500 text-porsche-dark text-xs font-semibold px-4 py-2 rounded-full transition-all">Tất cả Dòng xe</button>
+                    <button onclick="filterCategory('sportscar', this)" class="filter-btn bg-porsche-card text-gray-300 border border-porsche-border hover:border-gold-500/50 text-xs font-semibold px-4 py-2 rounded-full transition-all">Sportscar (911/Panamera)</button>
+                    <button onclick="filterCategory('suv', this)" class="filter-btn bg-porsche-card text-gray-300 border border-porsche-border hover:border-gold-500/50 text-xs font-semibold px-4 py-2 rounded-full transition-all">SUV Luxury (Cayenne/Macan)</button>
+                    <button onclick="filterCategory('electric', this)" class="filter-btn bg-porsche-card text-gray-300 border border-porsche-border hover:border-gold-500/50 text-xs font-semibold px-4 py-2 rounded-full transition-all">Thuần Điện & Hybrid (Taycan)</button>
+                </div>
+                <div class="text-xs text-gray-400">Hiển thị <span id="carCount" class="text-gold-500 font-bold">5</span> mẫu xe cao cấp</div>
+            </div>
+
+            <!-- Cars Grid -->
+            <div id="carsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dynamic Content Generated via JS -->
+            </div>
+        </section>
+
+        <!-- SECTION 2: TÀI KHOẢN & BẢO MẬT PORTAL -->
+        <section id="section-account" class="tab-content hidden space-y-8">
+            <div class="border-b border-porsche-border pb-4">
+                <h2 class="font-cinzel text-2xl font-bold text-white">QUẢN LÝ TÀI KHOẢN & BẢO MẬT VIP</h2>
+                <p class="text-xs text-gray-400 mt-1">Cập nhật hồ sơ chủ sở hữu Porsche và thiết lập các lớp bảo mật nâng cao</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Left Sidebar Profile Summary -->
+                <div class="bg-porsche-card border border-porsche-border rounded-xl p-6 h-fit">
+                    <div class="flex flex-col items-center text-center">
+                        <div class="relative mb-4 group">
+                            <img id="userAvatar" src=https://tse2.mm.bing.net/th/id/OIP.xf2JSZW1C8TSFZdGUka_PwHaFK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3"
+                                 alt="User Avatar" class="w-24 h-24 rounded-full object-cover border-2 border-gold-500">
+                            <button onclick="triggerAvatarUpload()" class="absolute bottom-0 right-0 bg-gold-500 text-porsche-dark p-2 rounded-full text-xs shadow-lg hover:brightness-110">
+                                <i class="fa-solid fa-camera"></i>
+                            </button>
+                        </div>
+                        <h3 id="profileDisplayName" class="font-bold text-white text-base">Nguyễn Hoàng Anh</h3>
+                        <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-gold-400 bg-gold-500/10 px-3 py-1 rounded-full border border-gold-500/30 mt-2">
+                            <i class="fa-solid fa-crown text-[10px]"></i> Porsche Platinum Owner
+                        </span>
+                        <div class="w-full border-t border-porsche-border my-4"></div>
+                        <div class="w-full text-left space-y-2 text-xs">
+                            <div class="flex justify-between text-gray-400"><span>Mã định danh:</span> <span class="text-white font-mono">PORSCHE-VN-91188</span></div>
+                            <div class="flex justify-between text-gray-400"><span>Trạng thái 2FA:</span> <span id="2faStatusBadge" class="text-emerald-400 font-semibold">Đã bật (Active)</span></div>
+                            <div class="flex justify-between text-gray-400"><span>Lần đăng nhập cuối:</span> <span class="text-gray-300">10:35 AM - Hôm nay</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side Form Controls -->
+                <div class="lg:col-span-2 space-y-8">
+                    <!-- Personal Info Section -->
+                    <div class="bg-porsche-card border border-porsche-border rounded-xl p-6">
+                        <h3 class="text-sm font-bold text-gold-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-id-card"></i> Thông Tin Chủ Xe
+                        </h3>
+                        <form id="profileForm" onsubmit="saveProfile(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                            <div>
+                                <label class="block text-gray-400 mb-1">Họ và tên *</label>
+                                <input type="text" id="profName" value="Nguyễn Hoàng Anh" required class="w-full bg-porsche-dark border border-porsche-border rounded p-2.5 text-white focus:border-gold-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 mb-1">Số điện thoại *</label>
+                                <input type="text" id="profPhone" value="0949752121" required class="w-full bg-porsche-dark border border-porsche-border rounded p-2.5 text-white focus:border-gold-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 mb-1">Email *</label>
+                                <input type="email" id="profEmail" value="25dh110275@st.huflit.edu.vn" required class="w-full bg-porsche-dark border border-porsche-border rounded p-2.5 text-white focus:border-gold-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 mb-1">Ngày sinh</label>
+                                <input type="date" id="profDob" value="28/10/2007" class="w-full bg-porsche-dark border border-porsche-border rounded p-2.5 text-white focus:border-gold-500 outline-none">
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block text-gray-400 mb-1">Địa chỉ bàn giao xe / Đăng ký</label>
+                                <input type="text" id="profAddress" value="Khu biệt thự Vinhomes Golden River, Q.1, TP. Hồ Chí Minh" class="w-full bg-porsche-dark border border-porsche-border rounded p-2.5 text-white focus:border-gold-500 outline-none">
+                            </div>
+                            <div class="sm:col-span-2 flex justify-end mt-2">
+                                <button type="submit" class="bg-gold-500 text-porsche-dark font-bold px-5 py-2.5 rounded text-xs hover:brightness-110 transition-all">Lưu thay đổi hồ sơ</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!--  Đổi Password -->
+                    <div class="bg-porsche-card border border-porsche-border rounded-xl p-6">
+                        <h3 class="text-sm font-bold text-gold-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-key"></i> Đổi Mật Khẩu Nâng Cao
+                        </h3>
+                        <form id="passwordForm" onsubmit="changePassword(event)" class="space-y-4 text-xs">
+                            <div>
+                                <label class="block text-gray-400 mb-1">Mật khẩu hiện tại *</label>
+                                <input type="password" id="currPass" required placeholder="••••••••" class="w-full bg-porsche-dark border border-porsche-border rounded p-2.5 text-white focus:border-gold-500 outline-none">
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-gray-400 mb-1">Mật khẩu mới *</label>
+                                    <input type="password" id="newPass" onkeyup="checkPasswordStrength()" required placeholder="Ít nhất 8 ký tự" class="w-full bg-porsche-dark border border-porsche-border rounded p-2.5 text-white focus:border-gold-500 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-400 mb-1">Xác nhận mật khẩu mới *</label>
+                                    <input type="password" id="confirmPass" required placeholder="Nhập lại mật khẩu mới" class="w-full bg-porsche-dark border border-porsche-border rounded p-2.5 text-white focus:border-gold-500 outline-none">
+                                </div>
+                            </div>
+                            <!-- Password Strength Bar -->
+                            <div class="space-y-1">
+                                <div class="flex justify-between text-[11px] text-gray-400">
+                                    <span>Độ mạnh mật khẩu:</span>
+                                    <span id="strengthText" class="font-semibold text-gray-500">Chưa nhập</span>
+                                </div>
+                                <div class="w-full h-1.5 bg-porsche-dark rounded-full overflow-hidden">
+                                    <div id="strengthBar" class="h-full w-0 transition-all duration-300"></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-end pt-2">
+                                <button type="submit" class="bg-porsche-dark border border-gold-500 text-gold-400 font-bold px-5 py-2.5 rounded hover:bg-gold-500 hover:text-porsche-dark transition-all">Cập nhật mật khẩu</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Advanced Security & 2FA -->
+                    <div class="bg-porsche-card border border-porsche-border rounded-xl p-6 space-y-6">
+                        <h3 class="text-sm font-bold text-gold-400 uppercase tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-shield-halved"></i> Bảo Mật Nâng Cao & 2FA
+                        </h3>
+
+                        <!-- 2FA Toggle Switch -->
+                        <div class="flex items-center justify-between p-4 bg-porsche-dark rounded-lg border border-porsche-border">
+                            <div>
+                                <h4 class="text-xs font-bold text-white">Xác thực 2 yếu tố (2FA - Authenticator App / SMS)</h4>
+                                <p class="text-[11px] text-gray-400 mt-0.5">Yêu cầu mã xác thực OTP khi đăng nhập từ thiết bị lạ</p>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="toggle2FA" checked onchange="handle2FAToggle(this)" class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gold-500"></div>
+                            </label>
+                        </div>
+
+                        <!-- Active Sessions -->
+                        <div>
+                            <h4 class="text-xs font-bold text-gray-300 mb-3 flex items-center justify-between">
+                                <span>Phiên đăng nhập đang hoạt động</span>
+                                <button onclick="logoutAllDevices()" class="text-[11px] text-gold-400 hover:underline">Đăng xuất tất cả thiết bị khác</button>
+                            </h4>
+                            <div class="space-y-2" id="sessionsList">
+                                <div class="flex items-center justify-between p-3 bg-porsche-dark rounded border border-porsche-border text-xs">
+                                    <div class="flex items-center gap-3">
+                                        <i class="fa-solid fa-laptop text-gold-500 text-base"></i>
+                                        <div>
+                                            <div class="text-white font-medium">MacBook Pro M2 - Chrome (TP.HCM)</div>
+                                            <div class="text-[10px] text-emerald-400">Thiết bị hiện tại • 118.69.182.10</div>
+                                        </div>
+                                    </div>
+                                    <span class="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded">Active</span>
+                                </div>
+                                <div class="flex items-center justify-between p-3 bg-porsche-dark rounded border border-porsche-border text-xs">
+                                    <div class="flex items-center gap-3">
+                                        <i class="fa-solid fa-mobile-screen-button text-gray-400 text-base"></i>
+                                        <div>
+                                            <div class="text-gray-300 font-medium">iPhone 15 Pro Max - Porsche App</div>
+                                            <div class="text-[10px] text-gray-400">2 giờ trước • 118.69.182.11</div>
+                                        </div>
+                                    </div>
+                                    <button onclick="revokeSession(this)" class="text-[11px] text-porsche-red hover:underline">Đăng xuất</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Security Activity Logs -->
+                        <div>
+                            <h4 class="text-xs font-bold text-gray-300 mb-3">Lịch sử hoạt động bảo mật</h4>
+                            <div class="bg-porsche-dark rounded border border-porsche-border overflow-hidden text-xs">
+                                <table class="w-full text-left">
+                                    <thead class="bg-porsche-border/40 text-gray-400 text-[10px] uppercase">
+                                        <tr>
+                                            <th class="p-2.5">Sự kiện</th>
+                                            <th class="p-2.5">Thiết bị</th>
+                                            <th class="p-2.5">Thời gian</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-porsche-border text-[11px] text-gray-300">
+                                        <tr>
+                                            <td class="p-2.5 text-emerald-400">Đăng nhập thành công (2FA)</td>
+                                            <td class="p-2.5">MacBook Pro - Chrome</td>
+                                            <td class="p-2.5 text-gray-400">Hôm nay 10:35</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-2.5 text-gold-400">Cập nhật thông tin cá nhân</td>
+                                            <td class="p-2.5">MacBook Pro - Chrome</td>
+                                            <td class="p-2.5 text-gray-400">Hôm qua 16:20</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-2.5 text-gray-300">Đổi mật khẩu thành công</td>
+                                            <td class="p-2.5">iPhone 15 Pro Max</td>
+                                            <td class="p-2.5 text-gray-400">02/10/2026</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--  ĐƠN HÀNG & THEO DÕI XE  -->
+        <section id="section-orders" class="tab-content hidden space-y-8">
+            <div class="border-b border-porsche-border pb-4">
+                <h2 class="font-cinzel text-2xl font-bold text-white">Lịch Sử Đặt Cọc Xe & Theo Dõi Kiện Hàng</h2>
+                <p class="text-xs text-gray-400 mt-1">Theo dõi hành trình độc quyền chiếc Porsche của bạn từ nhà máy của chúng tôi đến tay bạn</p>
+            </div>
+
+            <!-- Active Vehicle Order Card -->
+            <div class="bg-porsche-card border border-gold-500/40 rounded-xl p-6 gold-border-glow">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-6 border-b border-porsche-border">
+                    <div>
+                        <span class="text-[10px] bg-gold-500/20 text-gold-400 border border-gold-500/30 px-3 py-1 rounded-full font-bold uppercase tracking-widest">Đơn Đặt Cọc Ưu Tiên</span>
+                        <h3 class="font-cinzel text-xl font-bold text-white mt-2">Porsche 911 GT3 RS (2026 Edition)</h3>
+                        <p class="text-xs text-gray-400 mt-0.5">Mã đơn hàng: <span class="text-gold-400 font-mono">#POR-VN-2026-911GT3RS</span> • Ngày đặt: 15/08/2026</p>
+                    </div>
+                    <div class="text-left md:text-right">
+                        <div class="text-xs text-gray-400">Tổng giá trị niêm yết:</div>
+                        <div class="text-lg font-bold text-gold-400">18.180.000.000 VNĐ</div>
+                        <div class="text-[11px] text-emerald-400 font-semibold">Đã xác nhận đặt cọc (20%)</div>
+                    </div>
+                </div>
+
+                <!-- Logistics Vehicle Progress Tracker -->
+                <div class="py-8">
+                    <h4 class="text-xs font-bold text-gray-300 uppercase tracking-wider mb-6">Tiến Độ Sản Xuất & Vận Chuyển Toàn Cầu</h4>
+
+                    <div class="relative flex flex-col md:flex-row justify-between items-start md:items-center gap-6 md:gap-0">
+                        <!-- Step 1 -->
+                        <div class="step-completed flex md:flex-col items-center gap-4 md:gap-2 flex-1 text-left md:text-center z-10 w-full">
+                            <div class="step-icon w-10 h-10 rounded-full border-2 border-porsche-border bg-porsche-dark flex items-center justify-center font-bold text-xs transition-all">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <div class="step-line hidden md:block absolute top-5 left-1/2 w-full h-0.5 bg-porsche-border -z-10"></div>
+                            <div>
+                                <div class="text-xs font-bold text-white">Xác nhận Đặt cọc</div>
+                                <div class="text-[10px] text-gray-400">Stuttgart (15/08)</div>
+                            </div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="step-completed flex md:flex-col items-center gap-4 md:gap-2 flex-1 text-left md:text-center z-10 w-full">
+                            <div class="step-icon w-10 h-10 rounded-full border-2 border-porsche-border bg-porsche-dark flex items-center justify-center font-bold text-xs transition-all">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-white">Lắp ráp & Sơn Sonderwunsch</div>
+                                <div class="text-[10px] text-gray-400">Zuffenhausen (01/09)</div>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="step-active flex md:flex-col items-center gap-4 md:gap-2 flex-1 text-left md:text-center z-10 w-full">
+                            <div class="step-icon w-10 h-10 rounded-full border-2 border-gold-500 bg-porsche-dark text-gold-500 flex items-center justify-center font-bold text-xs transition-all">
+                                <i class="fa-solid fa-ship"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-gold-400">Vận chuyển Đường biển</div>
+                                <div class="text-[10px] text-emerald-400 font-semibold">Đang trên biển (Đến Port Cát Lái)</div>
+                            </div>
+                        </div>
+
+                        <!-- Step 4 -->
+                        <div class="flex md:flex-col items-center gap-4 md:gap-2 flex-1 text-left md:text-center z-10 w-full opacity-50">
+                            <div class="step-icon w-10 h-10 rounded-full border-2 border-porsche-border bg-porsche-dark text-gray-500 flex items-center justify-center font-bold text-xs">
+                                <i class="fa-solid fa-warehouse"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-gray-300">Thông quan & Về Showroom</div>
+                                <div class="text-[10px] text-gray-400">Porsche Centre Sài Gòn (Dự kiến 20/10)</div>
+                            </div>
+                        </div>
+
+                        <!-- Step 5 -->
+                        <div class="flex md:flex-col items-center gap-4 md:gap-2 flex-1 text-left md:text-center z-10 w-full opacity-50">
+                            <div class="step-icon w-10 h-10 rounded-full border-2 border-porsche-border bg-porsche-dark text-gray-500 flex items-center justify-center font-bold text-xs">
+                                <i class="fa-solid fa-key"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-gray-300">Lễ Bàn Giao Xe VIP</div>
+                                <div class="text-[10px] text-gray-400">Showroom VIP Room</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Detail Actions -->
+                <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-porsche-border text-xs">
+                    <div class="flex items-center gap-2 text-gray-400">
+                        <i class="fa-solid fa-location-dot text-gold-500"></i>
+                        Vị trí hiện tại của tàu chở xe: <span class="text-white font-medium">Biển Ấn Độ Dương (Tốc độ 18 knots)</span>
+                    </div>
+                    <div class="flex gap-3">
+                        <button onclick="downloadContract()" class="bg-porsche-dark border border-porsche-border text-gray-300 hover:text-white px-4 py-2 rounded">
+                            <i class="fa-solid fa-file-pdf mr-1 text-gold-500"></i> Tải Hợp Đồng PDF
+                        </button>
+                        <button onclick="switchTab('support')" class="bg-gold-500 text-porsche-dark font-bold px-4 py-2 rounded hover:brightness-110">
+                            Liên hệ Chuyên viên Bàn giao
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Table -->
+            <div class="bg-porsche-card border border-porsche-border rounded-xl p-6">
+                <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-4 flex items-center justify-between">
+                    <span>Đơn Hàng Phụ Kiện Porsche Tequipment & Design</span>
+                    <span class="text-xs text-gold-500 font-normal">2 đơn hàng gần nhất</span>
+                </h3>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-porsche-dark text-gray-400 text-[10px] uppercase">
+                            <tr>
+                                <th class="p-3">Mã Đơn</th>
+                                <th class="p-3">Sản phẩm Phụ kiện</th>
+                                <th class="p-3">Thành tiền</th>
+                                <th class="p-3">Trạng thái Kiện hàng</th>
+                                <th class="p-3 text-right">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-porsche-border text-gray-300">
+                            <tr>
+                                <td class="p-3 font-mono text-gold-400">#TEQ-8829</td>
+                                <td class="p-3 font-medium text-white">Mâm xe 21-inch RS Spyder Design Wheel Set</td>
+                                <td class="p-3">220.000.000 VNĐ</td>
+                                <td class="p-3"><span class="bg-blue-500/10 text-blue-400 border border-blue-500/30 px-2.5 py-1 rounded-full text-[10px]">Đang giao hàng (VNPost Express)</span></td>
+                                <td class="p-3 text-right">
+                                    <button onclick="openReturnModal('#TEQ-8829')" class="text-gold-400 hover:underline">Yêu cầu Đổi/Trả</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-gold-400">#TEQ-7710</td>
+                                <td class="p-3 font-medium text-white">Đồng hồ Porsche Design Chronograph 911 Edition</td>
+                                <td class="p-3">185.000.000 VNĐ</td>
+                                <td class="p-3"><span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2.5 py-1 rounded-full text-[10px]">Đã bàn giao thành công</span></td>
+                                <td class="p-3 text-right">
+                                    <button onclick="openReturnModal('#TEQ-7710')" class="text-gold-400 hover:underline">Hỗ trợ bảo hành</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!--  TRUNG TÂM CSKH & HOTLINE VIP -->
+        <section id="section-support" class="tab-content hidden space-y-8">
+            <div class="border-b border-porsche-border pb-4">
+                <h2 class="font-cinzel text-2xl font-bold text-white">TRUNG TÂM CHĂM SÓC KHÁCH HÀNG PORSCHE</h2>
+                <p class="text-xs text-gray-400 mt-1">Dịch vụ hỗ trợ cá nhân hóa 24/7 dành riêng cho chủ nhân xe Porsche tại Việt Nam</p>
+            </div>
+
+            <!-- VIP sdt -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-gradient-to-br from-porsche-card to-porsche-dark border border-gold-500/40 p-6 rounded-xl flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full bg-gold-500/20 text-gold-500 flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-phone-volume"></i>
+                    </div>
+                    <div>
+                        <div class="text-[10px] text-gray-400 uppercase tracking-wider font-bold">Hotline Dịch vụ VIP 24/7</div>
+                        <div class="text-lg font-bold text-gold-400">1800 911 911</div>
+                        <div class="text-[10px] text-emerald-400">Cứu hộ Porsche Assistance toàn quốc</div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-porsche-card to-porsche-dark border border-porsche-border p-6 rounded-xl flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                    <div>
+                        <div class="text-[10px] text-gray-400 uppercase tracking-wider font-bold">Email Hỗ Trợ Độc Quyền</div>
+                        <div class="text-xs font-bold text-white mt-1">vip-service@porsche.com.vn</div>
+                        <div class="text-[10px] text-gray-400">Phản hồi trong vòng 15 phút</div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-porsche-card to-porsche-dark border border-porsche-border p-6 rounded-xl flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-building-user"></i>
+                    </div>
+                    <div>
+                        <div class="text-[10px] text-gray-400 uppercase tracking-wider font-bold">Porsche Centre Saigon</div>
+                        <div class="text-xs font-bold text-white mt-1">Khu Đô Thị Phú Mỹ Hưng, Q.7</div>
+                        <div class="text-[10px] text-gray-400">Mở cửa 08:00 - 20:00 hàng ngày</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!--hỗ trợ -->
+                <div class="bg-porsche-card border border-porsche-border rounded-xl p-6">
+                    <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-paper-plane text-gold-500"></i> Gửi Yêu Cầu Hỗ Trợ / Đổi Trả Phụ Kiện
+                    </h3>
+                    <form onsubmit="submitSupportTicket(event)" class="space-y-4 text-xs">
+                        <div>
+                            <label class="block text-gray-400 mb-1">Loại yêu cầu *</label>
+                            <select id="ticketType" required class="w-full bg-porsche-dark border border-porsche-border rounded p-2.5 text-white focus:border-gold-500 outline-none">
+                                <option value="return">Yêu cầu Đổi/Trả phụ kiện Tequipment</option>
+                                <option value="maintenance">Lịch bảo dưỡng định kỳ (Service)</option>
+                                <option value="delivery">Hỏi đáp tiến độ vận chuyển xe</option>
+                                <option value="other">Thắc mắc khác</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 mb-1">Mã đơn hàng / Khung xe (VIN) liên quan</label>
+                            <input type="text" id="ticketVin" placeholder="VD: #POR-VN-2026-911GT3RS hoặc WP0ZZZ..." class="w-full bg-porsche-dark border border-porsche-border rounded p-2.5 text-white focus:border-gold-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 mb-1">Nội dung yêu cầu chi tiết *</label>
+                            <textarea id="ticketMessage" rows="4" required placeholder="Mô tả chi tiết vấn đề cần hỗ trợ..." class="w-full bg-porsche-dark border border-porsche-border rounded p-2.5 text-white focus:border-gold-500 outline-none resize-none"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-gold-500 text-porsche-dark font-bold py-3 rounded text-xs uppercase tracking-wider hover:brightness-110 transition-all">Gửi Yêu Cầu Đến Chuyên Viên CSKH</button>
+                    </form>
+                </div>
+
+                <!-- FAQ  -->
+                <div class="bg-porsche-card border border-porsche-border rounded-xl p-6">
+                    <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-circle-question text-gold-500"></i> Câu Hỏi Thường Gặp (FAQ)
+                    </h3>
+
+                    <div class="space-y-3 text-xs" id="faqAccordion">
+                        <div class="border border-porsche-border rounded-lg overflow-hidden">
+                            <button onclick="toggleFaq(this)" class="w-full text-left p-3 bg-porsche-dark text-white font-medium flex justify-between items-center">
+                                <span>Quy trình đặt cọc và nhận xe Porsche tại Việt Nam như thế nào?</span>
+                                <i class="fa-solid fa-chevron-down text-gray-400 text-xs transition-transform"></i>
+                            </button>
+                            <div class="faq-content hidden p-3 text-gray-300 bg-porsche-card border-t border-porsche-border leading-relaxed">
+                                Khách hàng tiến hành đặt cọc 20% giá trị xe. Sau đó, cấu hình xe của bạn sẽ được gửi trực tiếp tới nhà máy Zuffenhausen/Leipzig (Đức) để cá nhân hóa sản xuất. Thời gian bàn giao dao động từ 3-6 tháng.
+                            </div>
+                        </div>
+
+                        <div class="border border-porsche-border rounded-lg overflow-hidden">
+                            <button onclick="toggleFaq(this)" class="w-full text-left p-3 bg-porsche-dark text-white font-medium flex justify-between items-center">
+                                <span>Chính sách đổi trả phụ kiện Porsche Tequipment?</span>
+                                <i class="fa-solid fa-chevron-down text-gray-400 text-xs transition-transform"></i>
+                            </button>
+                            <div class="faq-content hidden p-3 text-gray-300 bg-porsche-card border-t border-porsche-border leading-relaxed">
+                                Các sản phẩm phụ kiện chính hãng Tequipment được áp dụng chính sách 1 đổi 1 trong vòng 30 ngày nếu còn nguyên tem niêm phong và không có dấu hiệu va đập ngoài ý muốn.
+                            </div>
+                        </div>
+
+                        <div class="border border-porsche-border rounded-lg overflow-hidden">
+                            <button onclick="toggleFaq(this)" class="w-full text-left p-3 bg-porsche-dark text-white font-medium flex justify-between items-center">
+                                <span>Chế độ bảo hành xe Porsche chính hãng?</span>
+                                <i class="fa-solid fa-chevron-down text-gray-400 text-xs transition-transform"></i>
+                            </button>
+                            <div class="faq-content hidden p-3 text-gray-300 bg-porsche-card border-t border-porsche-border leading-relaxed">
+                                Tất cả xe mới chính hãng đều đi kèm gói bảo hành 4 năm không giới hạn km, bảo hành sơn 3 năm và bảo hành rỉ sét thân xe 12 năm từ Porsche AG.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ĐẶT CỌC / ĐĂNG KÝ LÁI THỬ -->
+    <div id="bookingModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-porsche-card border border-gold-500/50 rounded-xl max-w-lg w-full p-6 relative">
+            <button onclick="closeModal('bookingModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <h3 id="modalTitle" class="font-cinzel text-xl font-bold text-white mb-1">ĐẶT CỌC XE PORSCHE</h3>
+            <p id="modalSub" class="text-xs text-gold-400 mb-4">Porsche 911 Carrera S</p>
+
+            <form onsubmit="handleBookingSubmit(event)" class="space-y-4 text-xs">
+                <div>
+                    <label class="block text-gray-400 mb-1">Họ tên người đăng ký *</label>
+                    <input type="text" id="bookName" value="Nguyễn Minh Hoàng" required class="w-full bg-porsche-dark border border-porsche-border rounded p-2.5 text-white focus:border-gold-500 outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-gray-400 mb-1">Số điện thoại *</label>
+                        <input type="text" id="bookPhone" value="0908 888 911" required class="w-full bg-porsche-dark border border-porsche-border rounded p-2.5 text-white focus:border-gold-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 mb-1">Showroom nhận xe *</label>
+                        <select id="bookShowroom" class="w-full bg-porsche-dark border border-porsche-border rounded p-2.5 text-white focus:border-gold-500 outline-none">
+                            <option>Porsche Centre Sài Gòn (Q.7)</option>
+                            <option>Porsche Centre Hà Nội (Long Biên)</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-gray-400 mb-1">Ghi chú tùy chọn màu sơn Sonderwunsch / Yêu cầu thêm</label>
+                    <textarea rows="3" placeholder="Nhập mã màu sơn hoặc cấu hình mâm xe..." class="w-full bg-porsche-dark border border-porsche-border rounded p-2.5 text-white focus:border-gold-500 outline-none resize-none"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-gold-500 to-gold-600 text-porsche-dark font-bold py-3 rounded uppercase text-xs tracking-wider hover:brightness-110">Xác Nhận Đăng Ký Trực Tuyến</button>
+            </form>
+        </div>
+    </div>
+
+    <!--YÊU CẦU ĐỔI TRẢ PHỤ KIỆN -->
+    <div id="returnModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-porsche-card border border-porsche-border rounded-xl max-w-md w-full p-6 relative">
+            <button onclick="closeModal('returnModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <h3 class="font-cinzel text-lg font-bold text-white mb-1">YÊU CẦU ĐỔI / TRẢ PHỤ KIỆN</h3>
+            <p id="returnOrderCode" class="text-xs text-gold-400 mb-4 font-mono">Mã đơn: #TEQ-8829</p>
+
+            <form onsubmit="handleReturnSubmit(event)" class="space-y-4 text-xs">
+                <div>
+                    <label class="block text-gray-400 mb-1">Lý do đổi trả *</label>
+                    <select required class="w-full bg-porsche-dark border border-porsche-border rounded p-2.5 text-white focus:border-gold-500 outline-none">
+                        <option>Kích thước mâm xe không phù hợp xe hiện tại</option>
+                        <option>Đổi sang dòng sản phẩm cao cấp hơn</option>
+                        <option>Lỗi đóng gói từ phía vận chuyển</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-gray-400 mb-1">Mô tả tình trạng phụ kiện</label>
+                    <textarea rows="3" placeholder="Còn nguyên tem niêm phong Porsche..." class="w-full bg-porsche-dark border border-porsche-border rounded p-2.5 text-white focus:border-gold-500 outline-none resize-none"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-porsche-dark border border-gold-500 text-gold-400 font-bold py-2.5 rounded hover:bg-gold-500 hover:text-porsche-dark transition-all">Gửi Yêu Cầu Xử Lý</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-porsche-dark border-t border-porsche-border mt-auto pt-10 pb-6 text-xs text-gray-400">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="font-cinzel font-bold text-white text-lg tracking-widest mb-3">PORSCHE</div>
+                    <p class="text-[11px] leading-relaxed">Nhà phân phối ủy quyền chính thức các dòng xe thể thao Porsche tại thị trường Việt Nam. Đỉnh cao kỹ nghệ sản xuất xe từ Đức.</p>
+                </div>
+                <div>
+                    <h4 class="text-white font-semibold mb-3">Dòng Xe Huyền Thoại</h4>
+                    <ul class="space-y-1.5 text-[11px]">
+                        <li><a href="#" onclick="switchTab('showroom')" class="hover:text-gold-400">Porsche 911 Carrera</a></li>
+                        <li><a href="#" onclick="switchTab('showroom')" class="hover:text-gold-400">Porsche Taycan Electric</a></li>
+                        <li><a href="#" onclick="switchTab('showroom')" class="hover:text-gold-400">Porsche Cayenne Turbo</a></li>
+                        <li><a href="#" onclick="switchTab('showroom')" class="hover:text-gold-400">Porsche Panamera GTS</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-semibold mb-3">Trung Tâm Dịch Vụ</h4>
+                    <ul class="space-y-1.5 text-[11px]">
+                        <li><a href="#" onclick="switchTab('account')" class="hover:text-gold-400">Tài Khoản Chủ Xe VIP</a></li>
+                        <li><a href="#" onclick="switchTab('orders')" class="hover:text-gold-400">Theo Dõi Đơn Hàng Vận Chuyển</a></li>
+                        <li><a href="#" onclick="switchTab('support')" class="hover:text-gold-400">Đặt Lịch Bảo Dưỡng Nhanh</a></li>
+                        <li><a href="#" onclick="switchTab('support')" class="hover:text-gold-400">Bảo Hành Porsche Approved</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-semibold mb-3">Kết Nối Với Chúng Tôi</h4>
+                    <div class="flex gap-3 text-base text-gray-300 mb-4">
+                        <a href="#" class="hover:text-gold-400"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="#" class="hover:text-gold-400"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="hover:text-gold-400"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                    <div class="text-[10px] text-gray-500">© 2026 Porsche Centre Vietnam. All rights reserved.</div>
+                    <div class="text-[10px] text-gray-500"> web by NguyenHoangAnh</div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="~/Scripts/jvs.js"></script>
+</body>
+</html>
